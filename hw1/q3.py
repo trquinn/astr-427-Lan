@@ -73,6 +73,14 @@ def main():
         f"Difference between actual and forth order interpolation: {abs(y1_actual - y1_forth)}"
     )
 
+    """
+    Combining two quadratic interpolations for different segments of the dataset, as described, doesn't 
+    create a true fourth-order interpolation. However, it might yield more accurate results locally 
+    because each segment's quadratic curve is tailored to fit a smaller subset of data more closely, 
+    potentially capturing local variations better than a single higher-order polynomial across the 
+    entire dataset.
+    """
+
 
 if __name__ == "__main__":
     main()
