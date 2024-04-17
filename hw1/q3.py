@@ -9,6 +9,7 @@ spaced in the independent variable (this makes it easier to determine which
 points to use for interpolation).
 """
 
+# TRQ: in general local variables should have documentation.
 
 def main():
     data = np.loadtxt("./hw1/hw1_data.txt")
@@ -17,12 +18,15 @@ def main():
 
     linear_interp = interp1d(x, y, kind="linear")
     quad_interp = interp1d(x, y, kind="quadratic")
+
+# TRQ: the following variables/functions should be documented.
     quad_interp_first_half = interp1d(
         x[: len(x) // 2 + 1], y[: len(y) // 2 + 1], kind="quadratic"
     )
     quad_interp_second_half = interp1d(
         x[len(x) // 2 :], y[len(y) // 2 :], kind="quadratic"
     )
+# TRQ: this is not fourth order, just 2 quadratics concatenated.
     forth_interp = lambda _x: (
         quad_interp_first_half(_x)
         if _x < x[len(x) // 2]
@@ -79,6 +83,9 @@ def main():
     because each segment's quadratic curve is tailored to fit a smaller subset of data more closely, 
     potentially capturing local variations better than a single higher-order polynomial across the 
     entire dataset.
+
+TRQ: what you write above is correct in many cases, but the question did ask for a
+    fourth order fit to demonstrate this.
     """
 
 

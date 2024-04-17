@@ -48,7 +48,15 @@ Output:
 
 (a) Smallest epsilon such that 1.0 - epsilon != 1.0: 1.110E-16
 (b) Smallest epsilon such that 1.0 + epsilon != 1.0: 2.220E-16
+
+TRQ: These two numbers are a factor of 2 too large because rounding of .5 in the last bit will
+allow smaller numbers to satisfy (1 +/- epsilon != 1)
+
 (c) Maximum representable number: 8.988E+307
+
+TRQ: One can represent a number ~ a factor 2 bigger than this because one can fill out the
+mantissa to be 1.9999999999
+
 (d) Minimum representable positive number: 4.941E-324
 
 
@@ -63,6 +71,9 @@ for the significand. This explains why the smallest ε that can alter the value 
 added (Part B) closely matches 2^(-52), and why the smallest ε that can alter the value of 
 1.0 when subtracted (Part A) is approximately half of that, due to the subtraction operation's 
 behavior in floating-point arithmetic.
+
+TRQ: it is not subtraction, per se, that makes the difference, but the change in absolute
+precision as one crosses the 1.0 boundary and the exponent changes by 1.
 
 The maximum representable number is consistent with the limits imposed by the exponent's size 
 (11 bits), allowing for exponents up to 2046 (since exponents are stored with an offset of 1023 

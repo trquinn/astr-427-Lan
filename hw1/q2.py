@@ -68,4 +68,7 @@ result of 0 rather than the expected 1/2.
 This loss of precision occurs when the difference between the two numbers is smaller 
 than the smallest representable number, which is on the order of 10^-16 for double 
 precision floating-point numbers.
+
+TRQ: the description above is good, but if 10^-16 is the smallest number, why do we
+have problems at x ~ 10^-8?
 '''
