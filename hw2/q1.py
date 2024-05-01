@@ -28,6 +28,9 @@ def runge_kutta_4(f, y0, t):
     return np.array(history)
 
 
+# TRQ: In leapforg you need to pull out "x" and "v" from the y array
+# so they can be treated separately.  E.g. for a 1 DOF system, x = y[0]
+# and v = y[1]
 def leapfrog_method(f, y0, t):
     """ Leapfrog method for second-order differential equations """
     y = np.array(y0)
@@ -38,6 +41,8 @@ def leapfrog_method(f, y0, t):
         y += v * dt
         v += f(y, t[i]) * dt
         history.append(y.copy())
+        
+    # TRQ: Closing 1/2 step is missing.
     return np.array(history)
 
 # Example usage for a system of coupled differential equations, dy/dt = f(y, t)
@@ -71,7 +76,9 @@ y0 = [1.0, 0.0]
 
 # Solve and plot errors
 for step in step_sizes:
-    t = np.arange(0, t_max + step, step)
+    # TRQ: the "+ step" is to be sure the last point is included
+    # roundoff error included an extra point, so I adjusted to 0.5*step.
+    t = np.arange(0, t_max + 0.5*step, step)
     exact = np.cos(t)
 
     euler_sol = euler_method(f, y0, t)
@@ -87,5 +94,6 @@ for step in step_sizes:
 plt.figure(figsize=(10, 6))
 plt.plot(np.log(step_sizes), errors['Euler'], 'o-', label='Euler')
 plt.plot(np.log(step_sizes), errors['RK4'], 's-', label='RK4')
-plt.plot(np.log(step_sizes), errors['Leapfrog'], '^-', label='Leapfrog')
+# TRQ: commented this out so I could see the other lines.
+# plt.plot(np.log(step_sizes), errors['Leapfrog'], '^-', label='Leapfrog')
 plt.show()
