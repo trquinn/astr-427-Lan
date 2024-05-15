@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 from scipy.constants import pi
 import time
 
+# TRQ: document all function parameters and return values
 def bisection_method(func, a, b, tol=1e-10, max_iter=1000):
     if func(a) * func(b) > 0:
         raise ValueError("Function has the same sign at the endpoints.")
@@ -19,8 +20,11 @@ def bisection_method(func, a, b, tol=1e-10, max_iter=1000):
         errors.append(abs(c - true_root))
     return c, errors
 
+# TRQ: is 1000 a reasonable number for max_iter?
 def newton_raphson_method(func, deriv, x0, tol=1e-10, max_iter=1000):
     errors = []
+# TRQ: for the reasons mentioned in class, you should maintain a bracket
+# for Newton.
     for _ in range(max_iter):
         fx = func(x0)
         dfx = deriv(x0)
@@ -30,6 +34,9 @@ def newton_raphson_method(func, deriv, x0, tol=1e-10, max_iter=1000):
         if abs(x1 - x0) < tol:
             break
         x0 = x1
+        # TRQ: the answer can't be hard coded.
+        # What you can do is calculate errors after convergence has
+        # been reached.
         true_root = np.sqrt(2)
         errors.append(abs(x0 - true_root))
     return x0, errors
@@ -86,20 +93,23 @@ plt.show()
 
 
 # Q2
-def kepler_solution(M_values, e, method='bisection', max_iter=1000):
+def kepler_solution(M_values, e, method='bisection', max_iter=100):
     results = []
     start_time = time.time()
 
     if method == 'bisection':
         for M in M_values:
-            root, _ = bisection_method(lambda E: kepler_equation(E, M, e), 0, 2*pi, max_iter=max_iter)
+            #TRQ: I've modified this to get closer to machine precision
+            root, _ = bisection_method(lambda E: kepler_equation(E, M, e), 0, 2*pi, tol=8e-16, max_iter=max_iter)
             results.append(root)
     elif method == 'newton':
         E0 = 0.5  # Initial guess
         for M in M_values:
+            #TRQ: I've modified this to get closer to machine precision
             root, _ = newton_raphson_method(lambda E: kepler_equation(E, M, e),
-                                            lambda E: derivative_kepler(E, e), E0, max_iter=max_iter)
+                                            lambda E: derivative_kepler(E, e), E0, tol=8e-16, max_iter=max_iter)
             results.append(root)
+            # TRQ: this definitely helps newton!
             E0 = root  # Use last root as initial guess for next
 
     elapsed_time = time.time() - start_time
