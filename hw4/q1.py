@@ -2,17 +2,20 @@ import numpy as np
 import pandas as pd
 from scipy.optimize import minimize
 from scipy.special import logit, expit  # for the hyperbolic secant
-from rich import print
+# TRQ: I don't have a "rich" module.
+# from rich import print
 
 # Function to compute the hyperbolic secant
 def sech(x):
     return 2 / (np.exp(x) + np.exp(-x))
 
 # Stellar density model function
+# TRQ: document arguments
 def rho_star(z, rho_thin, rho_thick, h_thin, h_thick):
     return rho_thin * sech(z / h_thin)**2 + rho_thick * sech(z / h_thick)**2
 
 # Function to compute the sum of squared residuals
+# TRQ: document arguments
 def sum_of_squares(params, z, rho_obs):
     rho_thin, rho_thick, h_thin, h_thick = params
     rho_model = rho_star(z, rho_thin, rho_thick, h_thin, h_thick)
@@ -83,6 +86,8 @@ known_values = {
 # Errors for the density values
 error_margin = 0.0004
 
+# TRQ: this function could use a lot more commenting as to what the argument is
+# and what it does.
 # Compare and comment on the results
 def compare_parameters(optimized_params):
     print("\nQ3: Comparison with known values:")
